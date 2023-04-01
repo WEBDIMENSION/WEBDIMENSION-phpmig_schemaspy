@@ -4,6 +4,7 @@ services:
   schemaspy_mysql:
     image: schemaspy/schemaspy
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_mysql
+    profiles: [ "debug" ]
     volumes:
       - ${PWD}/schemaspy/mysql/output:/output
       - ${PWD}/Docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
@@ -24,6 +25,7 @@ services:
   schemaspy_postgres:
     image: schemaspy/schemaspy
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_postgres
+    profiles: [ "debug" ]
     volumes:
       - ${PWD}/schemaspy/postgres/output:/output
       - ${PWD}/Docker/schemaspy/drivers:${POSTGRES_DRIVERS_DIR}
