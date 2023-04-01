@@ -1,0 +1,10 @@
+dist
+generated/openapi/openapi.json
+.env
+.node-version
+.devcontainer
+*.code-workspace
+.vscode
+schemaspy/output
+php-fpm/src/vendor
+php-fpm/src/cache

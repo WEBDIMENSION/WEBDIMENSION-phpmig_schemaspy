@@ -1,0 +1,27 @@
+{
+    "require": {
+        "davedevelopment/phpmig": "^1.7",
+        "pimple/pimple": "3.5",
+        "fakerphp/faker": "^1.21"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.4"
+    },
+    "scripts": {
+        "phpmig_migrate": [
+            "./vendor/bin/phpmig migrate"
+        ],
+        "phpmig_rollback": [
+            "./vendor/bin/phpmig rollback"
+        ],
+        "phpmig_rollback_all": [
+            "./vendor/bin/phpmig rollback -t 0"
+        ],
+        "fix-diff": [
+            "./vendor/bin/php-cs-fixer fix  --dry-run --diff"
+        ],
+        "fix": [
+            "./vendor/bin/php-cs-fixer fix"
+        ]
+    }
+}

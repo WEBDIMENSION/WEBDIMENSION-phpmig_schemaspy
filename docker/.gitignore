@@ -1,0 +1,7 @@
+mysql/data
+mysql/logs
+mysql/backup
+postgres/data
+postgres/backup
+laravel_nginx/log
+nginx_schemaspy/lo

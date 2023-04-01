@@ -1,0 +1,52 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #0f0f0f;
+}
+
+h2 {
+    margin-bottom: 0.5em
+}
+
+body {
+    padding: 1em;
+}
+
+ul {
+    margin-bottom: 2em;
+}
+
+ul > li {
+    list-style: none;
+    margin-bottom: 10px;
+    font-size: 18px;
+    padding-left: 1em;
+}
+
+ul > li a {
+    text-decoration: none;
+}
+
+ul > li a:visited {
+    color: #000;
+}
+
+ul > li a:link {
+    color: #000;
+}
+
+dl {
+    margin-bottom: 3em;
+}
+
+dd {
+    text-align: left;
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+}
