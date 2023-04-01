@@ -32,11 +32,8 @@ function create_url($port): string
 }
 
 $links = [];
-$links[] = ['service_name' => 'prism', 'href' => create_url(getenv('PRISM_CLIENT_PORT'))];
-$links[] = ['service_name' => 'swagger-ui', 'href' => create_url(getenv('SWAGGER_UI_CLIENT_PORT'))];
 $links[] = ['service_name' => 'schemaspy_mysql', 'href' => create_url(getenv('NGINX_SCHEMASPY_MYSQL_EXTERNAL_PORT'))];
 $links[] = ['service_name' => 'schemaspy_postgres', 'href' => create_url(getenv('NGINX_SCHEMASPY_POSTGRES_EXTERNAL_PORT'))];
-$links[] = ['service_name' => 'kibbana', 'href' => create_url(getenv('KIBANA_EXTERNAL_PORT'))];
 
 echo $blade->run("index",
     compact(
