@@ -21,6 +21,7 @@ from customers
 where is_premium = true
 group by prefecture
 having count(user_id) >= 10
+;
 
 --009
 select cid, max(session_count) - min(session_count) + 1 as numbber_of_visits
@@ -28,6 +29,7 @@ from web_log
 group by cid
 order by numbber_of_visits desc
 limit 3
+;
 
 --010
 select case
@@ -40,3 +42,4 @@ select case
 from products
 group by cost_range
 order by cost_range
+;
