@@ -62,31 +62,21 @@ select (
 
 
 --020
-select sum(ts2.discounnt)
-from (select sum(ts.quantity) * ts.unit as discounnt
-      from (select *
-                 , s.revenue / s.quantity as unit
-            from sales s
-            where s.product_id = 1
-              and is_proper = false) ts
-      group by unit) ts2
-;
-
--- select ((s.revenue / s.quantity)
---            -
---             (select s2.revenue / s2.quantity as price
---              from sales s2
---              where s2.product_id = 1
---                and s2.is_proper = false
---              limit 1)
---         )
---            *
---        (select sum(s3.quantity)
---         from sales s3
---         where s3.product_id = 1
---           and s3.is_proper = false)
---
--- from sales s
--- where product_id = 1
---   and is_proper = true
--- ;
+select sum(lost_revennue) as sum_lost_revenue
+from (
+    select *
+           , quantity * (proper_unit_price - dicount_unit_price) as lost_revennue
+    from (
+         select *
+              , revenue / quantity       as dicount_unit_price
+              , (
+              select sum(revenue) / sum(quantity)
+                    from sales
+                    where product_id = 1
+                      and is_proper = true
+                    ) as proper_unit_price
+        from sales
+        where product_id = 1
+          and is_proper is false
+        ) t2
+) t1
