@@ -1,0 +1,105 @@
+-- 160
+
+select name, birthday
+from customers
+where birthday in (select c.birthday
+                   from customers c
+                   where c.birthday is not null
+                   group by c.birthday
+                   having count(c.birthday) > 1)
+order by birthday
+;
+
+-- 161
+select order_id,
+       product_id,
+       revenue,
+       revenue /
+       (select sum(revenue)
+        from sales) as revenue_percentage
+from sales
+order by revenue desc
+limit 3
+;
+
+-- 162
+SELECT STDDEV_POP(revenue) AS stddev_2017
+     , (SELECT STDDEV_POP(revenue)
+        FROM sales)        AS revenue_stddev
+FROM sales
+WHERE EXTRACT(YEAR FROM date_time) = 2017
+;
+
+--163
+select count(revenue) as order_over_avg_rev
+from sales
+where revenue >= (select avg(revenue)
+                  from sales
+                  where is_proper = true)
+  and is_proper = true
+;
+
+-- 164 //todo
+SELECT SUM(sum_rev) AS sum_rev
+FROM (SELECT order_id
+           , SUM(revenue)   AS sum_rev
+           , MIN(is_proper) AS proper_flag
+      FROM sales
+      GROUP BY order_id
+      HAVING MIN(is_proper) IS TRUE) tbl
+;
+
+-- 165
+select sum(quantity)
+from sales
+where revenue >=
+      (select avg(revenue)
+       from sales)
+  and is_proper = true
+;
+
+--166
+select count(distinct user_id)
+from (select user_id
+      from sales
+      group by user_id
+      having sum(
+                     case
+                         when is_proper = true then
+                             1
+                         else
+                             0
+                         end
+                 ) = 0
+
+      order by user_id) tbl
+;
+
+-- 167
+SELECT COUNT(*) AS users
+FROM (SELECT user_id
+      FROM (SELECT user_id
+                 , product_id
+            FROM sales
+            GROUP BY user_id
+                   , product_id) tbl
+      GROUP BY user_id
+      HAVING COUNT(DISTINCT product_id) > 1) tbl
+;
+
+-- 168
+select count(distinct user_id)
+from (select user_id, order_id, count(distinct product_id)
+      from sales
+      group by user_id, order_id
+      having count(distinct product_id) > 1) tbl
+;
+
+-- 169
+select prefecture, avg( cast(avg_birthday as float4))
+from (select prefecture, date_part('year', age('2019-12-31', birthday)) as avg_birthday
+      from customers
+      where birthday is not null
+      group by prefecture, birthday) tbl
+group by prefecture
+order by  avg(avg_birthday) desc

@@ -41,7 +41,8 @@ from (select to_char(date_time, 'Q') as quarter, sum(revenue) as sum_rev
      on tbl_2019.quarter = tbl_2018.quarter
 ;
 
---153
+-- 153
+
 select name, user_age
 from (select s.user_id, name, date_part('year', age('2019-12-31', birthday)) as user_age
       from sales s
@@ -135,7 +136,7 @@ order by ttl_sum_rev desc
 limit 3
 ;
 
--- 167
+-- 157
 select count(distinct user_id) as users
 from sales
 where product_id = 7
