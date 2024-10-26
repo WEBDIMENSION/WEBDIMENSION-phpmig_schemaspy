@@ -1,13 +1,32 @@
-version: '3'
-
 services:
   schemaspy_mysql:
-    image: schemaspy/schemaspy
+    platform: linux/amd64
+    #    build: ./schemaspy/mysql
+    #    image: schemaspy/schemaspy
+    #    container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_mysql
+    ##    profiles: [ "debug" ]
+    #    volumes:
+    #      - ${PWD}/schemaspy/mysql/output:/output
+    #      - ${PWD}/Docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
+    #    depends_on:
+    #      - mysql
+    #    command: >
+    #      java -jar schemaspy.jar
+    #      -t ${DB_TYPE_MYSQL}
+    #      -dp ${MYSQL_DRIVERS_DIR}
+    #      -host ${MYSQL_HOST}
+    #      -port ${MYSQL_INTERNAL_PORT}
+    #      -db ${MYSQL_DATABASE}
+    #      -u ${MYSQL_USER}
+    #      -p ${MYSQL_PASSWORD}
+    #      -s ${MYSQL_SCHEMA}
+    #      -connprops allowPublicKeyRetrieval\\=false useSSL\\=false
+    build: ./docker/schemaspy/mysql
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_mysql
-    profiles: [ "debug" ]
+#    profiles: [ "debug" ]
     volumes:
       - ${PWD}/schemaspy/mysql/output:/output
-      - ${PWD}/Docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
+      - ${PWD}/docker/schemaspy/mysql/drivers:${MYSQL_DRIVERS_DIR}
     depends_on:
       - mysql
     command: >
@@ -23,12 +42,32 @@ services:
       -connprops allowPublicKeyRetrieval\\=false useSSL\\=false
 
   schemaspy_postgres:
-    image: schemaspy/schemaspy
+    platform: linux/amd64
+#    build: ./schemaspy
+#    image: schemaspy/schemaspy
+#    container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_postgres
+#    profiles: [ "debug" ]
+#    volumes:
+#      - ${PWD}/schemaspy/postgres/output:/output
+#      - ${PWD}/Docker/schemaspy/drivers:${POSTGRES_DRIVERS_DIR}
+#    depends_on:
+#      - postgres
+#    command: >
+#      java -jar schemaspy.jar
+#      -t ${DB_TYPE_POSTGRES}
+#      -dp ${POSTGRES_DRIVERS_DIR}
+#      -host ${POSTGRES_HOST}
+#      -port ${POSTGRES_INTERNAL_PORT}
+#      -db ${POSTGRES_DB}
+#      -u ${POSTGRES_USER}
+#      -p ${POSTGRES_PASSWORD}
+#      -connprops useSSL\\\\=false -all
+    build: ./docker/schemaspy/postgres
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_postgres
     profiles: [ "debug" ]
     volumes:
       - ${PWD}/schemaspy/postgres/output:/output
-      - ${PWD}/Docker/schemaspy/drivers:${POSTGRES_DRIVERS_DIR}
+      - ${PWD}/docker/schemaspy/postgres/drivers:${POSTGRES_DRIVERS_DIR}
     depends_on:
       - postgres
     command: >
@@ -44,6 +83,7 @@ services:
 
   nginx:
     image: nginx:1.13.9-alpine
+    platform: linux/amd64
     container_name: ${CONTAINER_NAME_PREFIX}_nginx
     volumes:
       - ${PWD}/schemaspy/mysql/output:/var/www/html/schemaspy/mysql:ro
@@ -60,10 +100,13 @@ services:
     environment:
       - LANG=ja_JP.UTF-8
       - TZ=Asia/Tokyo
+
     command: "nginx -g 'daemon off;'"
 
   php-fpm:
+    platform: linux/amd64
     build: ./docker/php-fpm
+    container_name: ${CONTAINER_NAME_PREFIX}_php-fpm
     volumes:
       - ${PWD}/php-fpm/src:/usr/share/nginx/html
     env_file:
@@ -71,6 +114,7 @@ services:
     working_dir: /usr/share/nginx/html
 
   phpmig_mysql:
+    platform: linux/amd64
     build: ./docker/phpmig
     container_name: ${CONTAINER_NAME_PREFIX}_phpmig_mysql
     volumes:
@@ -78,7 +122,7 @@ services:
       - ${PWD}/docker/phpmig/php.ini:/usr/local/etc/php/php.ini
       - ${PWD}/docker/phpmig/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${PWD}/phpmig:/phpmig
-#      - ${DIR}/Docker/mysql/data:/var/lib/mysql
+    #      - ${DIR}/Docker/mysql/data:/var/lib/mysql
     environment:
       TARGET_DB: ${TARGET_DB_MYSQL}
       MYSQL_HOST: ${MYSQL_HOST}
@@ -90,9 +134,10 @@ services:
       XDEBUG_KEY: ${XDEBUG_KEY}
 
   mysql:
+    platform: linux/amd64
     build: ./docker/mysql
     container_name: ${CONTAINER_NAME_PREFIX}_mysql
-#    user: "999:999"
+    #    user: "999:999"
     volumes:
       - ${PWD}/docker/mysql/my.cnf:/etc/my.cnf
       - volume-mysql:/var/lib/mysql
@@ -109,6 +154,7 @@ services:
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
 
   phpmig_postgres:
+    platform: linux/amd64
     build: ./docker/phpmig
     container_name: ${CONTAINER_NAME_PREFIX}_phpmig_postgres
     volumes:
@@ -128,6 +174,7 @@ services:
       XDEBUG_KEY: ${XDEBUG_KEY}
 
   postgres:
+    platform: linux/amd64
     build: ./docker/postgres
     container_name: ${CONTAINER_NAME_PREFIX}_postgres
     #    user: "999:999"
@@ -145,6 +192,7 @@ services:
       TZ: ${TZ}
 
   elasticsearch:
+    platform: linux/amd64
     build: ./docker/elasticsearch
     container_name: ${CONTAINER_NAME_PREFIX}_elasticsearch
     profiles: [ "debug" ]
@@ -166,6 +214,7 @@ services:
     tty: true
 
   kibana:
+    platform: linux/amd64
     image: docker.elastic.co/kibana/kibana:7.16.2
     container_name: ${CONTAINER_NAME_PREFIX}_kibana
     profiles: [ "debug" ]

@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+//$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+//$dotenv->load();
 
 
 use eftec\bladeone\BladeOne;
@@ -13,7 +13,7 @@ $blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
 $php_version = $_SERVER['PHP_VERSION'];
 $ip = $_SERVER['REMOTE_ADDR'];
 
-if (explode('.', $_SERVER['REMOTE_ADDR'])[0] == '172') {
+if (explode('.', $_SERVER['REMOTE_ADDR'])[0] == '192') {
     $docker_on = "Docker For Mac";
 } else {
     $docker_on = "multipass";

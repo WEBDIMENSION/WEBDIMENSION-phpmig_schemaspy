@@ -32,10 +32,28 @@ DB設計・操作を目標とする
 すべてのサービス起動
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
----
+### phpmig install
+
+```bash
+docker compose  phpmig_mysql composr install
+ or
+docker compose  phpmig_mysql composr install
+```
+
+### mysql データ生成
+
+```bash
+docker compose run  phpmig_mysql php vendor/bin/phpmig migrate
+```
+
+### postgres データ生成
+
+```bash
+docker compose run  phpmig_postgres php vendor/bin/phpmig migrate
+```
 
 ## Theme
 
@@ -58,7 +76,7 @@ ECサイトのDBを想定
 | スタッフ   | staffs             | 002xxx                  |
 | 顧客マスター | users              | 006xxx                  |
 | 顧客権限   | users_ranks        | 005xxx                  |
-| 商品ブランド | brands             | 010xxx                  |
+| 商品ブランド | product_brands     | 010xxx                  |
 
 
 
